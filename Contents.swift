@@ -8,7 +8,9 @@ class KitchenAppliance {
 
 class Knife: KitchenAppliance {
     func chop(_ food: [Food] ) {
-        print("Ow!")
+        for _ in food {
+            print("Chop Suey!")
+        }
     }
 }
 
