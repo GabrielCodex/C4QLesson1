@@ -42,6 +42,10 @@ class Dicer: KitchenAppliance {
     }
 }
 
+protocol Chop {
+    func chop(_ food: Food)
+}
+
 class Food {
     var daysUntilExpiration = 3
     var canBeEaten = true
