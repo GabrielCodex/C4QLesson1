@@ -9,19 +9,20 @@ class Knife: Chop {
 class Fridge: Electric {
     var powerOn = false
     
-    var foodInside = [Food]()
+    var foodInside = [Expireable]()
     
-    func add(_ food: Food) {
-        foodInside.append(food)
+    func add(_ food: Expireable) {
+        var foodItem = food
+        foodInside.append(foodItem)
         guard powerOn else {return}
-        food.refrigerate()
+        foodItem.refrigerate()
     }
 }
 
 class Dicer: Chop, Electric {
     var powerOn = false
 
-    func chop(_ food: [Food]) {
+    func chop(_ food: [Chopable]) {
         guard powerOn else {return}
         for _ in food {
             print("Chop suey!")
@@ -30,12 +31,14 @@ class Dicer: Chop, Electric {
 }
 
 protocol Chop {
-    func chop(_ food: [Food])
+    func chop(_ food: [Chopable])
 }
 
 extension Chop {
-    func chop(_ food: [Food] ) {
-        print("Ow!")
+    func chop(_ food: [Chopable] ) {
+        for _ in food {
+            print("Chop suey!")
+        }
     }
 }
 
@@ -52,42 +55,62 @@ extension Electric {
     }
 }
 
-class Food {
-    var daysUntilExpiration = 3
-    var canBeEaten = true
+protocol Expireable {
+    var daysUntilExpiration: Int {get set}
+    var canBeEaten: Bool {get set}
+    
+    mutating func refrigerate()
+    mutating func expire()
+    mutating func addOneDay()
+}
 
-    func refrigerate() {
+extension Expireable {
+    mutating func refrigerate() {
         daysUntilExpiration += 4
     }
-
-    func expire() {
+    
+    mutating func expire() {
         canBeEaten = false
     }
-
-    func addOneDay() {
+    
+    mutating func addOneDay() {
         daysUntilExpiration -= 1
     }
 }
 
-class Lettuce: Food {
-    var isChoppable = true
+protocol Chopable {
+    func getChopped()
 }
 
-class Egg: Food {
-    var isChoppable = false
+struct Lettuce: Expireable, Chopable {
+    var daysUntilExpiration: Int
+    var canBeEaten: Bool
+    
+    func getChopped() {
+        print("Chop suey!")
+    }
 }
 
-class CheezeIts: Food{
-    var isChoppable = false
+struct Egg: Expireable {
+    var daysUntilExpiration: Int
+    var canBeEaten: Bool
+}
+
+class CheezeIts {
+
 }
 
 let fridge = Fridge()
 let slicer = Dicer()
 let knife = Knife()
 
-let lettuce = Lettuce()
-let egg = Egg()
+let lettuce = Lettuce(daysUntilExpiration: 4, canBeEaten: true)
+let egg = Egg(daysUntilExpiration: 7, canBeEaten: true)
 let cheezeIts = CheezeIts()
+
+fridge.add(egg)
+print(fridge.foodInside[0].daysUntilExpiration)
+
 
 
 
