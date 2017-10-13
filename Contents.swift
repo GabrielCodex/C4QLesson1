@@ -2,23 +2,14 @@
 
 import Foundation
 
-class KitchenAppliance {
-    let isInKitchen = true
+class Knife: Chop {
+    
 }
 
-class Knife: KitchenAppliance {
-    func chop(_ food: [Food] ) {
-        print("Ow!")
-    }
-}
-
-class Fridge: KitchenAppliance {
+class Fridge: Electric {
     var powerOn = false
+    
     var foodInside = [Food]()
-
-    func flipPower() {
-        powerOn = !powerOn
-    }
     
     func add(_ food: Food) {
         foodInside.append(food)
@@ -27,12 +18,8 @@ class Fridge: KitchenAppliance {
     }
 }
 
-class Dicer: KitchenAppliance {
+class Dicer: Chop, Electric {
     var powerOn = false
-
-    func flipPower() {
-        powerOn = !powerOn
-    }
 
     func chop(_ food: [Food]) {
         guard powerOn else {return}
@@ -43,7 +30,26 @@ class Dicer: KitchenAppliance {
 }
 
 protocol Chop {
-    func chop(_ food: Food)
+    func chop(_ food: [Food])
+}
+
+extension Chop {
+    func chop(_ food: [Food] ) {
+        print("Ow!")
+    }
+}
+
+protocol Electric: class {
+    var powerOn: Bool {get set}
+    
+    func flipPower()
+}
+
+extension Electric {
+    
+    func flipPower() {
+        powerOn = !powerOn
+    }
 }
 
 class Food {
