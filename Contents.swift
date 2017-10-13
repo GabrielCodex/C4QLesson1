@@ -38,7 +38,7 @@ class Dicer: KitchenAppliance {
 
     func chop(_ food: [Food]) {
         guard powerOn else {return}
-        for _ in food {
+        for item in food {
             print("Chop suey!")
         }
     }
@@ -69,7 +69,7 @@ class Egg: Food {
     var isChoppable = false
 }
 
-class CheezeIts: Food{
+class CheezeIts: Food {
     var isChoppable = false
 }
 
@@ -80,6 +80,13 @@ let knife = Knife()
 let lettuce = Lettuce()
 let egg = Egg()
 let cheezeIts = CheezeIts()
+
+fridge.flipPower()
+fridge.add(egg)
+print(egg.daysUntilExpiration)
+slicer.flipPower()
+slicer.chop([egg, lettuce])
+
 
 
 
